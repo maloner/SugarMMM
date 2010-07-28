@@ -1,0 +1,138 @@
+<html>
+<title>Sugar MMM (MeterMaid Maker) README</title>
+<style type="text/css">
+body 
+{ 
+   margin: 10px;
+   font-family: Monospace;
+   font-size: 14px;
+}
+
+fieldset, table, pre 
+{
+    margin-bottom:0;
+    word-wrap: break-word;
+}
+
+p 
+{
+   margin-top: 10px;
+   margin-bottom: 10px;
+}
+
+textarea
+{
+   font-family: Arial,Verdana,Helvetica,sans-serif;
+}
+
+td
+{
+   text-align: left;
+   vertical-align: top;
+}
+
+.td_code
+{
+   text-align: left;
+   vertical-align: top;
+   border: 1px solid black;
+}
+
+.highlight {
+   background-color: #8888FF;
+}
+
+</style>
+<body>
+    <h1 style="text-align:center">Sugar MMM (MeterMaid Maker) README</h1>
+    <p><b>Summary:</b><br />
+    SugarMMM (MeterMaid Maker)  generates MeterMaid XML scripts to simulate typical usage of Sugar for each module you specify.
+    The command line version accepts a module name as its argument and produces a standard script.  The GUI version allows you to choose multiple
+    modules, as well as MeterMaid files already existing on your filesystem, and combine them into a single script.
+    </p><br /><br />
+
+
+    <p><b>Installation:</b><br />
+    Copy the SugarMMM folder into the root directory of your Sugar installation.  Next, you must edit xml_strings.php, located in the metadata folder.
+    Correct values must be set for the following variables:
+    <ul>
+        <li>$sugar_path - The absolute path to your Sugar installation</li>
+        <li>$sugar_domain - Domain of your Sugar installation (localhost)</li>
+        <li>$metermaid_path - Absolute path to your MeterMaid installation</li>
+        <li>$gui_writedir - Absolute path to a directory where the GUI version can write its files and look for files to include</li>
+        <li>$login_name - Login name of Sugar user you want to login as</li>
+        <li>$login_pw - Password for user named in $login_name</li>
+    </ul>
+    More information about how to customize the behavior of SugarMMM by editing this file is given below.
+    </p><br /><br />
+
+    <p><b>Command Line Version:</b><br />
+    <br />
+    Usage: <i>php sugarmmm_cli.php --module=<u>module</u></i><br /><br />
+    The argument <u>module</u> can be the name of any module in your Sugar installation, including custom modules.  If you supply an incorrect
+    module name, SugarMMM will die after printing all the valid options.  For custom modules you will have to use the name of the package, followed
+    by an underscore, and then the name of the module. <br/>
+    If the module argument is valid, SugarMMM will write several .xml files to your SugarMMM directory, copy these files to your MeterMaid directory,
+    and run MeterMaid on the module main script, producing the JMeter .jmx file.
+    The behavior of the script is as follows:<br />
+    <ul>
+        <li>Log-in</li>
+        <li>Go to module's list view</li>
+        <li>Perform a search for a random character</li>
+        <li>90% of the time:</li>
+        <ul>
+            <li>Select a record and go to detail view</li>
+            <li>5% of the time, delete the record</li>
+            <li>5% of the time, run the Quick Create script</li>
+            <li>10% of the time, run the Add Relationship script</li>
+        </ul>
+        <li>10% of the time, run the Create Record script</li>
+    </ul>
+    <br />Create Record script:<br />
+    <ul>
+        <li>Request module EditView</li>
+        <li>Perform Save request</li>
+    </ul>
+    <br />Quick Create script:<br />
+    <ul>
+        <li>Randomly choose a module from the Quick Create bar and request the Quick Create form</li>
+        <li>Perform Save request</li>
+    </ul>
+    <br />Add relationship script:<br />
+    <ul>
+        <li>Randomly choose a related module from the DetailView</li>
+        <li>Request that module's subpanel relate popup</li>
+        <li>Do a search for a random character</li>
+        <li>Select a record, saving the relationship</li>
+    </ul><br />
+    After each request, a JMeter Gaussian Random Timer will cause a delay of 40 seconds +- 20 seconds.
+    </p><br /><br />
+
+    <p><b>GUI Version:</b><br />
+    To use the GUI version, point your browser to:<br /> <br /><i>localhost/<u>SugarDirectory</u>/SugarMMM</i><br /><br />
+    Where <i><u>SugarDirectory</u></i> is the root directory of the Sugar installation, containing SugarMMM. You will be able to select as many modules
+    as you like. Also, for each module, you can choose to include or exclude the Create Record, Quick Create, and Add Relationship sub-scripts.  
+    After selecting modules and scripts, you will be able to select any pre-existing MeterMaid scripts from the $gui_writedir directory to be included
+    in the final generated script.  After this step, when you click the Generate button, the new scripts will be written to the $gui_writedir directory.
+    For each module, the behavior of the generated script is the same as for the command line version (described above).  You must ensure that the web server has permission to read and write the $gui_writedir directory or the GUI Version won't work.
+    </p><br /><br /> 
+
+    <p><b>xml_strings.php</b><br />
+    In addition to the variables listed above, you can modify several other settings in the xml_strings.php file.<br />
+    <ul>
+        <li>$timer_delay - The delay (base value) of the Gaussian Random Timer</li>
+        <li>$timer_range - The range of the Gaussian Random timer</li>
+        <li>$testmode - If true, the Gaussian Random timer delay and range are set to 0, and the throughput controllers are set to 100% for all generated scripts.</li>
+        <li>$modules_with_email - When generating Save requests for any modules in this array, post data for the email widget will be included.  If you are using a custom module with email, add it to this array to generate an email address in Save requests.</li>
+    </ul><br />
+    Changing the following values isn't recommended as the results haven't been tested:  
+    <ul>
+        <li>$modules - Controls what modules are supported.</li>
+        <li>$bad_modules - Controls what modules are excluded. </li>
+        <li>$quickcreate_modules - When generating the QuickCreate subscript, randomly chooses one of these. </li>
+        <li>$field_lookup - For save requests, this array controls what fields are handled by name and what values are generated for them. </li>
+        <li>$type_lookup - For save requests, this array controls what fields are handled by type and what values are generated for them. </li>
+        <li> other variables - These are the template MeterMaid XML for generated scripts.</li>
+    </ul>
+</body>
+</html>
