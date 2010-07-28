@@ -20,9 +20,10 @@ More information about how to customize the behavior of SugarMMM by editing this
 
 Command Line Version:
 
-Usage: php sugarmmm_cli.php --module=module
+Usage: php sugarmmm_cli.php --module=module [--threads=threads]
 
-The argument module can be the name of any module in your Sugar installation, including custom modules. If you supply an incorrect module name, SugarMMM will die after printing all the valid options. For custom modules you will have to use the name of the package, followed by an underscore, and then the name of the module.
+The argument module can be the name of any module in your Sugar installation, including custom modules. The threads argument is optional.  It controls how many threads JMeter will generate to run your script.  The default value is 1.
+If you supply an incorrect module name, SugarMMM will die after printing all the valid options. For custom modules you will have to use the name of the package, followed by an underscore, and then the name of the module.
 If the module argument is valid, SugarMMM will write several .xml files to your SugarMMM directory, copy these files to your MeterMaid directory, and run MeterMaid on the module main script, producing the JMeter .jmx file. The behavior of the script is as follows:
 
     * Log-in
