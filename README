@@ -7,7 +7,7 @@ SugarMMM (MeterMaid Maker) generates MeterMaid XML scripts to simulate typical u
 Installation:
 Copy the SugarMMM folder into the root directory of your Sugar installation. Next, you must edit xml_strings.php, located in the metadata folder. Correct values must be set for the following variables:
 
-    * $sugar_path - The absolute path to your Sugar installation
+    * $sugar_path - Path to your Sugar installation
     * $sugar_domain - Domain of your Sugar installation (localhost)
     * $metermaid_path - Absolute path to your MeterMaid installation
     * $gui_writedir - Absolute path to a directory where the GUI version can write its files and look for files to include

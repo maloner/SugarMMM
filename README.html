@@ -56,7 +56,7 @@ td
     Copy the SugarMMM folder into the root directory of your Sugar installation.  Next, you must edit xml_strings.php, located in the metadata folder.
     Correct values must be set for the following variables:
     <ul>
-        <li>$sugar_path - The absolute path to your Sugar installation</li>
+        <li>$sugar_path - Path to your Sugar installation</li>
         <li>$sugar_domain - Domain of your Sugar installation (localhost)</li>
         <li>$metermaid_path - Absolute path to your MeterMaid installation</li>
         <li>$gui_writedir - Absolute path to a directory where the GUI version can write its files and look for files to include</li>
@@ -68,11 +68,12 @@ td
 
     <p><b>Command Line Version:</b><br />
     <br />
-    Usage: <i>php sugarmmm_cli.php --module=<u>module</u></i><br /><br />
+    Usage: <i>php sugarmmm_cli.php --module=<u>module</u> [--threads=<u>threads</u>]</i><br /><br />
     The argument <u>module</u> can be the name of any module in your Sugar installation, including custom modules.  If you supply an incorrect
     module name, SugarMMM will die after printing all the valid options.  For custom modules you will have to use the name of the package, followed
     by an underscore, and then the name of the module. <br/>
-    If the module argument is valid, SugarMMM will write several .xml files to your SugarMMM directory, copy these files to your MeterMaid directory,
+    The <u>threads</u> argument is optional.  It controls how many threads JMeter will generate to run your script.  The default value is 1. <br />
+    If your arguments are valid, SugarMMM will write several .xml files to your SugarMMM directory, copy these files to your MeterMaid directory,
     and run MeterMaid on the module main script, producing the JMeter .jmx file.
     The behavior of the script is as follows:<br />
     <ul>
